@@ -7,18 +7,24 @@ import transpile from './transpile';
 import processMarkup from './process-markup';
 import processCSS from './process-css';
 import processJson from './process-json';
+import resourceIndexer from './resource-indexer';
 import copyFiles from './copy-files';
 import { build } from 'aurelia-cli';
 
 const debounceWaitTime = 100;
 let isBuilding = false;
 let pendingRefreshPaths = [];
-let watchCallback = () => { };
+let watchCallback = () => {};
 let watches = [
   { name: 'transpile', callback: transpile, source: project.transpiler.source },
   { name: 'markup', callback: processMarkup, source: project.markupProcessor.source },
   { name: 'CSS', callback: processCSS, source: project.cssProcessor.source },
-  { name: 'JSON', callback: processJson, source: project.jsonProcessor.source }
+  { name: 'JSON', callback: processJson, source: project.jsonProcessor.source },
+  {
+    name: 'globalResource',
+    callback: resourceIndexer,
+    source: project.resourceIndexer.source
+  }
 ];
 
 if (typeof project.build.copyFiles === 'object') {
@@ -27,13 +33,13 @@ if (typeof project.build.copyFiles === 'object') {
   }
 }
 
-let watch = (callback) => {
+let watch = callback => {
   watchCallback = callback || watchCallback;
 
   // watch every glob individually
-  for(let watcher of watches) {
+  for (let watcher of watches) {
     if (Array.isArray(watcher.source)) {
-      for(let glob of watcher.source) {
+      for (let glob of watcher.source) {
         watchPath(glob);
       }
     } else {
@@ -42,24 +48,25 @@ let watch = (callback) => {
   }
 };
 
-let watchPath = (p) => {
+let watchPath = p => {
   gulpWatch(
     p,
     {
       read: false, // performance optimization: do not read actual file contents
       verbose: true
     },
-    (vinyl) => processChange(vinyl));
+    vinyl => processChange(vinyl)
+  );
 };
 
-let processChange = (vinyl) => {
+let processChange = vinyl => {
   if (vinyl.path && vinyl.cwd && vinyl.path.startsWith(vinyl.cwd)) {
     let pathToAdd = vinyl.path.slice(vinyl.cwd.length + 1);
     log(`Watcher: Adding path ${pathToAdd} to pending build changes...`);
     pendingRefreshPaths.push(pathToAdd);
     refresh();
   }
-}
+};
 
 let refresh = debounce(() => {
   if (isBuilding) {
@@ -76,13 +83,12 @@ let refresh = debounce(() => {
   // based on the files that have changed
   for (let watcher of watches) {
     if (Array.isArray(watcher.source)) {
-      for(let source of watcher.source) {
+      for (let source of watcher.source) {
         if (paths.find(path => minimatch(path, source))) {
           refreshTasks.push(watcher);
         }
       }
-    }
-    else {
+    } else {
       if (paths.find(path => minimatch(path, watcher.source))) {
         refreshTasks.push(watcher);
       }
@@ -95,18 +101,22 @@ let refresh = debounce(() => {
     return;
   }
 
-  log(`Watcher: Running ${refreshTasks.map(x => x.name).join(', ')} tasks on next build...`);
+  log(
+    `Watcher: Running ${refreshTasks.map(x => x.name).join(', ')} tasks on next build...`
+  );
 
   let toExecute = gulp.series(
     readProjectConfiguration,
     gulp.parallel(refreshTasks.map(x => x.callback)),
     writeBundles,
-    (done) => {
+    done => {
       isBuilding = false;
       watchCallback();
       done();
       if (pendingRefreshPaths.length > 0) {
-        log('Watcher: Found more pending changes after finishing build, triggering next one...');
+        log(
+          'Watcher: Found more pending changes after finishing build, triggering next one...'
+        );
         refresh();
       }
     }

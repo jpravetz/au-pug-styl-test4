@@ -28,18 +28,19 @@
   "jsonProcessor": {
     "source": ["src/**/*.json"]
   },
-  "platform": {
-    "port": 9000,
-    "index": "index.html",
-    "baseDir": ".",
-    "output": "scripts"
-  },
   "resourceIndexer": {
     "view": "html",
     "pal": false,
     "mode": "single",
     "fileExtension": ".ts",
-    "verbose": 1
+    "verbose": 1,
+    "source": ["src/resources/**/*.*"]
+  },
+  "platform": {
+    "port": 9000,
+    "index": "index.html",
+    "baseDir": ".",
+    "output": "scripts"
   },
   "build": {
     "targets": [
