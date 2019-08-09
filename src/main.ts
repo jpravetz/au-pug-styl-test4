@@ -1,10 +1,10 @@
-import {Aurelia} from 'aurelia-framework'
+import { Aurelia } from 'aurelia-framework';
 import environment from './environment';
 
 export function configure(aurelia: Aurelia) {
-  aurelia.use
-    .standardConfiguration()
-    .feature('resources');
+  aurelia.use.standardConfiguration();
+  aurelia.use.feature('resources');
+  // aurelia.use.globalResources('resources/elements/mybox');
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 

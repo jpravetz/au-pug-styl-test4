@@ -12,33 +12,34 @@
   "transpiler": {
     "id": "typescript",
     "fileExtension": ".ts",
-    "dtsSource": [
-      "./types/**/*.d.ts"
-    ],
-    "source": [
-      "src/**/*.ts"
-    ]
+    "dtsSource": ["./types/**/*.d.ts"],
+    "source": ["src/**/*.ts"]
   },
   "markupProcessor": {
-    "source": [
-      "src/**/*.html"
-    ]
+    "x-source": ["src/**/*.html"],
+    "id": "minimum",
+    "displayName": "Pug Minimal Minification",
+    "fileExtension": ".pug",
+    "source": "src/**/*.pug"
   },
   "cssProcessor": {
-    "source": [
-      "src/**/*.styl"
-    ]
+    "source": ["src/**/*.styl"]
   },
   "jsonProcessor": {
-    "source": [
-      "src/**/*.json"
-    ]
+    "source": ["src/**/*.json"]
   },
   "platform": {
     "port": 9000,
     "index": "index.html",
     "baseDir": ".",
     "output": "scripts"
+  },
+  "resourceIndexer": {
+    "view": "html",
+    "pal": false,
+    "mode": "single",
+    "fileExtension": ".ts",
+    "verbose": 1
   },
   "build": {
     "targets": [
@@ -52,15 +53,13 @@
     "options": {
       "minify": "stage & prod",
       "sourcemaps": "dev & stage",
-      "rev": false,
+      "rev": "stage && prod",
       "cache": "dev & stage"
     },
     "bundles": [
       {
         "name": "app-bundle.js",
-        "source": [
-          "**/*.{js,json,css,html}"
-        ]
+        "source": ["**/*.{js,json,css,html}"]
       },
       {
         "name": "vendor-bundle.js",
@@ -91,10 +90,7 @@
       "plugins": [
         {
           "name": "text",
-          "extensions": [
-            ".html",
-            ".css"
-          ],
+          "extensions": [".html", ".css"],
           "stub": false
         }
       ]
