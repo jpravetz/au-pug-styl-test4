@@ -1,8 +1,9 @@
 import 'msub';
+import { isNumber, isNonEmptyArray } from 'epdoc-util';
 
 const VALRULES = {
   title: {
-    name: 'title',
+    name: 'Status Component',
     type: 'filename',
     required: true,
     min: 1,
@@ -18,11 +19,18 @@ export class StatusCustomElement {
   constructor() {}
 
   bind() {
-    this.title = 'Insert';
+    this.title = 'Status component';
     this.message = 'Hello ${name}, from status!'.msub({ name: 'Frank' });
   }
 
   attached() {
     console.log('attached status');
+    let x = isNumber(3) ? true : false;
+    let y = isNonEmptyArray(null);
+
+    // Testing the ability to add @types/google.visualization
+    let a = google.visualization;
+    google.charts.load('current', { packages: ['corechart'] });
+    let canSetImmediate = typeof window !== 'undefined' && window.setImmediate;
   }
 }

@@ -1,6 +1,8 @@
 template.test-status
   require(from='./status.css')
 
-  .box
-    h1 ${title}
-    h3 ${message}
+  .card.m-3
+    .card-header
+      h1.card-title ${title}
+    .card-body.box
+      h3 ${message}

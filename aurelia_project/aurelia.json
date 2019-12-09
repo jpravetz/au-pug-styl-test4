@@ -29,7 +29,7 @@
     "source": ["src/**/*.json"]
   },
   "resourceIndexer": {
-    "view": "html",
+    "view": "pug",
     "pal": false,
     "mode": "single",
     "fileExtension": ".ts",

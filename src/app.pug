@@ -1,9 +1,22 @@
 template
+  require(from='bootstrap/css/bootstrap.css')
   require(from='./app.css')
   h1 ${message}
   //- p #{metadata.title}
   //- p #{metadata.server}
 
-  mybox
+  .container
+    .row(if.bind='loaded')
+      .col
 
-  status
+        mybox
+
+    .row
+      .col
+        status
+
+    .row
+      .col(if.bind='showAlt')
+        p Show Alt is true
+      .col(else)
+        p Show Alt is false

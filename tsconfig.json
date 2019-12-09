@@ -4,28 +4,23 @@
     "module": "amd",
     "noImplicitAny": false,
     "declaration": false,
-    "types": [
-      "node",
-      "jest"
-    ],
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "target": "es5",
-    "lib": [
-      "es2015",
-      "dom"
-    ],
+    "target": "ES2016",
+    "lib": ["es2017", "dom", "esnext.array", "es2018.promise"],
     "moduleResolution": "node",
     "baseUrl": "src",
-    "allowJs": true
+    "paths": {
+      "./*": ["./*"]
+    },
+    "types": ["google.visualization"],
+    "allowJs": true,
+    "resolveJsonModule": true
   },
-  "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts",
-    "./types/**/*.d.ts"
-  ],
+  "include": ["./src/**/*.ts", "./test/**/*.ts", "./types/**/*.d.ts"],
+  "exclude": ["@types/**/*"],
   "atom": {
     "rewriteTsconfig": false
   }

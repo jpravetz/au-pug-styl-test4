@@ -2,8 +2,10 @@ template.test-mybox
   require(from='./mybox.css')
 
   p box goes here!
-  .box
-    h1 ${title}
-    h3 ${message}
+  .card.mb-3
+    .card-header
+      h1.card-title ${title}
+    .card-body
+      h3 ${message}
 
   test

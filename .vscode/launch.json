@@ -26,6 +26,14 @@
       "sourceMapPathOverrides": {
         "../src/*": "${webRoot}/*"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "au build",
+      "program": "${workspaceFolder}/node_modules/.bin/au",
+      "args": ["build"],
+      "console": "integratedTerminal"
     }
   ]
 }
